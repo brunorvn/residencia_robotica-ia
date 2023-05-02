@@ -2,6 +2,7 @@ package br.ufpe.cin.residencia.banco.conta;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,6 +10,9 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.List;
+
+import br.ufpe.cin.residencia.banco.BancoDB;
 import br.ufpe.cin.residencia.banco.R;
 
 //Ver anotações TODO no código
