@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.RecyclerView;
 
 import br.ufpe.cin.residencia.banco.cliente.ClientesActivity;
 import br.ufpe.cin.residencia.banco.conta.ContasActivity;
@@ -51,5 +52,6 @@ public class MainActivity extends AppCompatActivity {
                 v -> startActivity(new Intent(this, PesquisarActivity.class))
         );
     }
-    //TODO Neste arquivo ainda falta a atualização automática do valor total de dinheiro armazenado no banco
+    //TODO Neste arquivo ainda falta a atualização automática do valor total de dinheiro armazenado
+    // no banco
 }

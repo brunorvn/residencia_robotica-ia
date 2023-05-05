@@ -2,18 +2,21 @@ package br.ufpe.cin.residencia.banco.conta;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
+import androidx.room.Database;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.RoomDatabase;
 import androidx.room.Update;
 
 import java.util.List;
 
 //Ver anotações TODO no código
+
+
 @Dao
 public interface ContaDAO {
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void adicionar(Conta c);
 
