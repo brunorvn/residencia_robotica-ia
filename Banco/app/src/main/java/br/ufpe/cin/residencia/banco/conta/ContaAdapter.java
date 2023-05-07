@@ -48,7 +48,4 @@ public class ContaAdapter extends ListAdapter<Conta, ContaViewHolder> {
                 }
             };
 
-//    public void atualizarContas(List<Conta> novaListaContas) {
-//        this.contas.clear();
-//    }
 }

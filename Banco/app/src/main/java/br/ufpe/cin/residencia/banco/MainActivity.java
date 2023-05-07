@@ -1,12 +1,14 @@
 package br.ufpe.cin.residencia.banco;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import br.ufpe.cin.residencia.banco.cliente.ClientesActivity;
@@ -29,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
         Button creditar = findViewById(R.id.btnCreditar);
         Button pesquisar = findViewById(R.id.btnPesquisar);
         TextView totalBanco = findViewById(R.id.totalDinheiroBanco);
+
+
 
         //Remover a linha abaixo se for implementar a parte de Clientes
         clientes.setEnabled(false);
@@ -54,4 +58,13 @@ public class MainActivity extends AppCompatActivity {
     }
     //TODO Neste arquivo ainda falta a atualização automática do valor total de dinheiro armazenado
     // no banco
+
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+//        Thread thread = new Thread() {
+//        //getsaldo em nova thread;
+//        };
+//        thread.start();
+//    }
 }

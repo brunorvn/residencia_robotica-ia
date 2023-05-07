@@ -1,9 +1,13 @@
 package br.ufpe.cin.residencia.banco.conta;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
@@ -39,7 +43,6 @@ public class EditarContaActivity extends AppCompatActivity {
         String nomeConta = i.getStringExtra(KEY_NOME_CONTA);
         String saldosConta = i.getStringExtra(KEY_SALDO_CONTA);
 
-        //TODO  usar o número da conta passado via Intent para recuperar informações da conta
         //10
         campoNumero.setText(numeroConta);
         campoNome.setText(nomeConta);
@@ -54,18 +57,38 @@ public class EditarContaActivity extends AppCompatActivity {
                     String saldoConta = campoSaldo.getText().toString();
                     //TODO: Incluir validações aqui, antes de criar um objeto Conta. Se todas as validações passarem, aí sim monta um objeto Conta.
                     //TODO: chamar o método que vai atualizar a conta no Banco de Dados
-                    try {
-                        Conta c = new Conta(numeroConta, Double.valueOf(saldoConta), nomeCliente, cpfCliente);
-                        viewModel.atualizar(c);
-                    }catch (Exception exception){
-                        campoCPF.setError("Campo invalido");
-                        campoCPF.requestFocus();
-
-                        campoNome.setError("Campo invalido");
+                    if (nomeCliente.trim().isEmpty()) {
+                        campoNome.setError("Nome não pode estar em branco");
                         campoNome.requestFocus();
-
-                        campoSaldo.setError("Campo invalido");
+                    } else if (cpfCliente.trim().isEmpty()) {
+                        campoCPF.setError("CPF não pode estar em branco");
+                        campoCPF.requestFocus();
+                    } else if (numeroConta.trim().isEmpty()) {
+                        campoNumero.setError("Número da conta não pode estar em branco");
+                        campoNumero.requestFocus();
+                    } else if (saldoConta.trim().isEmpty()) {
+                        campoSaldo.setError("Saldo não pode estar em branco");
                         campoSaldo.requestFocus();
+                    } else if (nomeCliente.length() < 5) {
+                        campoNome.setError("Nome deve ter 5 caracteres ou mais");
+                        campoNome.requestFocus();
+                    } else if (cpfCliente.length() != 11) {
+                        campoCPF.setError("CPF deve ter 11 dígitos");
+                        campoCPF.requestFocus();
+                    } else if (!saldoConta.matches("-?\\d+(\\.\\d+)?")) {
+                        campoSaldo.setError("Saldo deve ser um número válido");
+                        campoSaldo.requestFocus();
+                    }  else {
+                        try {
+                            Conta c = new Conta(numeroConta, Double.valueOf(saldoConta), nomeCliente, cpfCliente);
+                            viewModel.atualizar(c);
+                        } catch (Exception exception) {
+                            String errorMessage = "Erro ao criar conta: " + exception.getMessage();
+                            Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
+                            Log.e(TAG, errorMessage, exception);
+
+                        }
+                        finish();
 
                     }
                 }
@@ -91,6 +114,8 @@ public class EditarContaActivity extends AppCompatActivity {
                 campoSaldo.setError("Campo invalido");
                 campoSaldo.requestFocus();
             }
-        });
-    }
+            finish();
+        }
+    );
+}
 }

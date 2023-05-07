@@ -11,7 +11,7 @@ import java.util.List;
 
 import br.ufpe.cin.residencia.banco.BancoDB;
 
-//Ver métodos anotados com TODO
+//Ver métodos anotados com
 public class ContaViewModel extends AndroidViewModel {
 
     private ContaRepository repository;
@@ -28,31 +28,27 @@ public class ContaViewModel extends AndroidViewModel {
     void inserir(Conta c) {
         new Thread(() -> repository.inserir(c)).start();
     }
-
     void atualizar(Conta c) {
-        //implementado
-        rodarEmBackground(
-                () -> this.repository.getContas()
-        );
-    }
 
+        rodarEmBackground(
+                () -> this.repository.atualizar(c)
+        );
+    }  //implementado
     void remover(Conta c) {
-        //implementado
         rodarEmBackground(
                 () -> this.repository.remover(c)
         );
 
-    }
-
+    }  //implementado
     void buscarPeloNumero(String numeroConta) {
-        //implementado
+
         rodarEmBackground(
                 () -> {
                     Conta conta = this.repository.buscarPeloNumero(numeroConta);
                     _contaAtual.postValue(conta);
                 }
         );
-    }
+    }  //implementado
     private void rodarEmBackground(Runnable r) {
         new Thread(r).start();
     }

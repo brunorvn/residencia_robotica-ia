@@ -37,6 +37,10 @@ public class TransferirActivity extends AppCompatActivity {
                     //TODO lembrar de implementar validação dos números das contas e do valor da operação, antes de efetuar a operação de transferência.
                     // O método abaixo está sendo chamado, mas precisa ser implementado na classe BancoViewModel para funcionar.
                     double valor = Double.valueOf(valorOperacao.getText().toString());
+                    if (numOrigem.trim().isEmpty()){
+                        numeroContaOrigem.setError("Campo não pode estar vazio.");
+                        numeroContaOrigem.requestFocus()
+;                    }
                     viewModel.transferir(numOrigem, numDestino, valor);
                     finish();
                 }
@@ -44,3 +48,4 @@ public class TransferirActivity extends AppCompatActivity {
 
     }
 }
+

@@ -35,22 +35,17 @@ public class ContasActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
-        // criar o banco
-//        db = Room.databaseBuilder(
-//                getApplicationContext(),
-//                BancoDB.class,
-//                BancoDB.DB_NAME
-//        ).build();
-//
-//        // recuperar dados do banco
+
 
         Button adicionarConta = findViewById(R.id.btn_Adiciona);
 
+        // atualizar lista na tela
         viewModel.contas.observe(
                 this,
                 novaLista ->{
                     Log.d("BANCODEDADOS", String.valueOf(novaLista.size()));
-                    adapter.getCurrentList();
+                    List<Conta> novaListaConta = new ArrayList<>(novaLista);
+                    adapter.submitList(novaListaConta);
                 }
         );
 
@@ -60,8 +55,7 @@ public class ContasActivity extends AppCompatActivity {
                 }
         );
     }
-    //TODO Neste arquivo ainda falta implementar
-    // o código que atualiza a lista de contas automaticamente na tela
+
 
 
     @Override
