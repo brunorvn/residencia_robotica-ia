@@ -14,6 +14,9 @@ import br.ufpe.cin.residencia.banco.R;
 public class EditarContaActivity extends AppCompatActivity {
 
     public static final String KEY_NUMERO_CONTA = "numeroDaConta";
+    public static final String KEY_CPF_CONTA = "CPFDaConta";
+    public static final String KEY_NOME_CONTA = "NomeDaConta";
+    public static final String KEY_SALDO_CONTA = "SaldoDaConta";
     ContaViewModel viewModel;
 
     @Override
@@ -32,7 +35,16 @@ public class EditarContaActivity extends AppCompatActivity {
 
         Intent i = getIntent();
         String numeroConta = i.getStringExtra(KEY_NUMERO_CONTA);
-        //TODO usar o número da conta passado via Intent para recuperar informações da conta
+        String cpfConta = i.getStringExtra(KEY_CPF_CONTA);
+        String nomeConta = i.getStringExtra(KEY_NOME_CONTA);
+        String saldosConta = i.getStringExtra(KEY_SALDO_CONTA);
+
+        //TODO  usar o número da conta passado via Intent para recuperar informações da conta
+        //10
+        campoNumero.setText(numeroConta);
+        campoNome.setText(nomeConta);
+        campoSaldo.setText(saldosConta);
+        campoCPF.setText(cpfConta);
 
         btnAtualizar.setText("Editar");
         btnAtualizar.setOnClickListener(
@@ -42,11 +54,43 @@ public class EditarContaActivity extends AppCompatActivity {
                     String saldoConta = campoSaldo.getText().toString();
                     //TODO: Incluir validações aqui, antes de criar um objeto Conta. Se todas as validações passarem, aí sim monta um objeto Conta.
                     //TODO: chamar o método que vai atualizar a conta no Banco de Dados
+                    try {
+                        Conta c = new Conta(numeroConta, Double.valueOf(saldoConta), nomeCliente, cpfCliente);
+                        viewModel.atualizar(c);
+                    }catch (Exception exception){
+                        campoCPF.setError("Campo invalido");
+                        campoCPF.requestFocus();
+
+                        campoNome.setError("Campo invalido");
+                        campoNome.requestFocus();
+
+                        campoSaldo.setError("Campo invalido");
+                        campoSaldo.requestFocus();
+
+                    }
                 }
         );
 
         btnRemover.setOnClickListener(v -> {
             //TODO implementar remoção da conta
+
+            String nomeCliente = campoNome.getText().toString();
+            String cpfCliente = campoCPF.getText().toString();
+            String saldoConta = campoSaldo.getText().toString();
+
+            try {
+                Conta conta = new Conta(numeroConta, Double.valueOf(saldoConta), nomeCliente, cpfCliente);
+                viewModel.remover(conta);
+            } catch (Exception exception){
+                campoCPF.setError("Campo invalido");
+                campoCPF.requestFocus();
+
+                campoNome.setError("Campo invalido");
+                campoNome.requestFocus();
+
+                campoSaldo.setError("Campo invalido");
+                campoSaldo.requestFocus();
+            }
         });
     }
 }

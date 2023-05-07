@@ -30,14 +30,30 @@ public class ContaViewModel extends AndroidViewModel {
     }
 
     void atualizar(Conta c) {
-        //TODO implementar
+        //implementado
+        rodarEmBackground(
+                () -> this.repository.getContas()
+        );
     }
 
     void remover(Conta c) {
-        //TODO implementar
+        //implementado
+        rodarEmBackground(
+                () -> this.repository.remover(c)
+        );
+
     }
 
     void buscarPeloNumero(String numeroConta) {
-        //TODO implementar
+        //implementado
+        rodarEmBackground(
+                () -> {
+                    Conta conta = this.repository.buscarPeloNumero(numeroConta);
+                    _contaAtual.postValue(conta);
+                }
+        );
+    }
+    private void rodarEmBackground(Runnable r) {
+        new Thread(r).start();
     }
 }

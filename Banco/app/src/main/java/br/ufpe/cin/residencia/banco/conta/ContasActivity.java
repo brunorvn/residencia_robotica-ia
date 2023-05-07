@@ -3,6 +3,7 @@ package br.ufpe.cin.residencia.banco.conta;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import br.ufpe.cin.residencia.banco.BancoDB;
@@ -44,29 +46,18 @@ public class ContasActivity extends AppCompatActivity {
 
         Button adicionarConta = findViewById(R.id.btn_Adiciona);
 
+        viewModel.contas.observe(
+                this,
+                novaLista ->{
+                    Log.d("BANCODEDADOS", String.valueOf(novaLista.size()));
+                    adapter.getCurrentList();
+                }
+        );
+
         adicionarConta.setOnClickListener(
                 v -> {
                     startActivity(new Intent(this, AdicionarContaActivity.class));
-//                    new Thread(
-//                            () -> {
-//
-//                                ContaDAO dao = db.contaDAO();
-//                                Conta c = new Conta(
-//                                        "1",
-//                                        2.00,
-//                                        "3",
-//                                        "4"
-//                                        );
-//                                dao.adicionar(c);
-//                                runOnUiThread(
-//                                        adapter. //adapter não tem a classe atualizar contas
-//                                );
-//
-//
-//
-//                            }
-//                    ).start();
-}
+                }
         );
     }
     //TODO Neste arquivo ainda falta implementar
@@ -76,13 +67,5 @@ public class ContasActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-//        new Thread(
-//
-//                () ->{ LiveData < List < Conta >> contas = db.contaDAO().contas();
-//                    runOnUiThread(
-//                            () -> adapter.onCreateViewHolder(contas)
-//                    );
-//                }
-//        ).start();
     }
 }

@@ -43,28 +43,25 @@ public class AdicionarContaActivity extends AppCompatActivity {
                     // que o campo de saldo tem de fato um número, assim por diante).
                     // Se todas as validações passarem, aí sim cria a Conta conforme linha abaixo.
 
-                    try {
-                        if (nomeCliente.length() >= 5){
-
-                            if (cpfCliente.length() == 11){
-
-                                Conta conta = new Conta(numeroConta, Double.valueOf(saldoConta), nomeCliente, cpfCliente);
-
-                            } else {
-                                throw new IllegalArgumentException("O cpf deve ter exatamente 11 dígitos.");
-                            }
-                        } else{
-                            throw new IllegalArgumentException("O nome deve ter pelo menos 5 dígitos.");
-                        }
-
-                    } catch(IllegalArgumentException exception) {
-                        System.out.println("Erro: " + exception.getMessage());
-
-                    }
-                    //TODO: chamar o método que vai salvar a conta no Banco de Dados
-                    finish();
+//                    try {
+                        Conta conta = new Conta(numeroConta, Double.parseDouble(saldoConta), nomeCliente, cpfCliente);
+                        viewModel.inserir(conta);
+//
+//                    } catch(Exception exception) {
+//
+//                        if (nomeCliente.length() < 5) {
+//                            campoNome.setError("Nome deve ter mais de 5 caracteres");
+//                            campoNome.requestFocus();
+//                        }
+//                        if (cpfCliente.length() != 11) {
+//                            campoCPF.setError("CPF deve ter 11 dígitos");
+//                            campoCPF.requestFocus();
+//                        }
+//                        //TODO: chamar o método que vai salvar a conta no Banco de Dados
+//
+                        finish();
+//                    }
                 }
-        );
-
+                );
+        }
     }
-}
