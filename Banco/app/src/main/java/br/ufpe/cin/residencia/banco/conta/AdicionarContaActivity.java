@@ -42,19 +42,7 @@ public class AdicionarContaActivity extends AppCompatActivity {
                     String numeroConta = campoNumero.getText().toString();
                     String saldoConta = campoSaldo.getText().toString();
 
-                    if (nomeCliente.trim().isEmpty()) {
-                        campoNome.setError("Nome não pode estar em branco");
-                        campoNome.requestFocus();
-                    } else if (cpfCliente.trim().isEmpty()) {
-                        campoCPF.setError("CPF não pode estar em branco");
-                        campoCPF.requestFocus();
-                    } else if (numeroConta.trim().isEmpty()) {
-                        campoNumero.setError("Número da conta não pode estar em branco");
-                        campoNumero.requestFocus();
-                    } else if (saldoConta.trim().isEmpty()) {
-                        campoSaldo.setError("Saldo não pode estar em branco");
-                        campoSaldo.requestFocus();
-                    } else if (nomeCliente.length() < 5) {
+                    if (nomeCliente.length() < 5) { // validações
                         campoNome.setError("Nome deve ter 5 caracteres ou mais");
                         campoNome.requestFocus();
                     } else if (cpfCliente.length() != 11) {
@@ -63,17 +51,31 @@ public class AdicionarContaActivity extends AppCompatActivity {
                     } else if (!saldoConta.matches("-?\\d+(\\.\\d+)?")) {
                         campoSaldo.setError("Saldo deve ser um número válido");
                         campoSaldo.requestFocus();
-                    }  else {
+                    } else if(numeroConta.isEmpty()) {
+                        campoNumero.setError("Número da conta não pode estar em branco");
+                        campoNumero.requestFocus();
+                    }
+                    else {
                         try {
-                            Conta conta = new Conta(numeroConta, Double.parseDouble(saldoConta), nomeCliente, cpfCliente);
+                            Conta conta = new Conta(
+                                    numeroConta,
+                                    Double.parseDouble(saldoConta),
+                                    nomeCliente,
+                                    cpfCliente);
                             viewModel.inserir(conta);
-
+                            finish();
+                        //Catch caso os campos estejam vazios
                         } catch(Exception exception) {
-                            String errorMessage = "Erro ao criar conta: " + exception.getMessage();
-                            Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
-                            Log.e(TAG, errorMessage, exception);
+                            campoNome.setError("Nome não pode estar em branco");
+                            campoNome.requestFocus();
+
+                            campoCPF.setError("CPF não pode estar em branco");
+                            campoCPF.requestFocus();
+
+                            campoSaldo.setError("Saldo não pode estar em branco");
+                            campoSaldo.requestFocus();
                         }
-                        finish();
+
                     }
 
                 }

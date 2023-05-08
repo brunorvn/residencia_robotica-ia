@@ -36,14 +36,14 @@ public class EditarContaActivity extends AppCompatActivity {
         EditText campoCPF = findViewById(R.id.cpf);
         EditText campoSaldo = findViewById(R.id.saldo);
         campoNumero.setEnabled(false);
+        campoSaldo.setEnabled(false); // conta só pode ser modificada via debitar e creditar
 
         Intent i = getIntent();
         String numeroConta = i.getStringExtra(KEY_NUMERO_CONTA);
         String cpfConta = i.getStringExtra(KEY_CPF_CONTA);
         String nomeConta = i.getStringExtra(KEY_NOME_CONTA);
         String saldosConta = i.getStringExtra(KEY_SALDO_CONTA);
-
-        //10
+        // pegando os valores vindos do intent anterior
         campoNumero.setText(numeroConta);
         campoNome.setText(nomeConta);
         campoSaldo.setText(saldosConta);
@@ -55,8 +55,8 @@ public class EditarContaActivity extends AppCompatActivity {
                     String nomeCliente = campoNome.getText().toString();
                     String cpfCliente = campoCPF.getText().toString();
                     String saldoConta = campoSaldo.getText().toString();
-                    //TODO: Incluir validações aqui, antes de criar um objeto Conta. Se todas as validações passarem, aí sim monta um objeto Conta.
-                    //TODO: chamar o método que vai atualizar a conta no Banco de Dados
+                    //TODO: Incluir validações aqui, antes de criar um objeto Conta.
+                    // Se todas as validações passarem, aí sim monta um objeto Conta.
                     if (nomeCliente.trim().isEmpty()) {
                         campoNome.setError("Nome não pode estar em branco");
                         campoNome.requestFocus();
@@ -81,14 +81,15 @@ public class EditarContaActivity extends AppCompatActivity {
                     }  else {
                         try {
                             Conta c = new Conta(numeroConta, Double.valueOf(saldoConta), nomeCliente, cpfCliente);
-                            viewModel.atualizar(c);
+                            viewModel.atualizar(c);  //TODO: chamar o método que vai atualizar a conta no Banco de Dados
+                            finish();
                         } catch (Exception exception) {
                             String errorMessage = "Erro ao criar conta: " + exception.getMessage();
                             Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
                             Log.e(TAG, errorMessage, exception);
 
                         }
-                        finish();
+
 
                     }
                 }

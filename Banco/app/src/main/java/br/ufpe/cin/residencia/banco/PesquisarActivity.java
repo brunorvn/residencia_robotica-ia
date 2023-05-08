@@ -34,6 +34,7 @@ public class PesquisarActivity extends AppCompatActivity {
                 v -> {
                     String oQueFoiDigitado = aPesquisar.getText().toString();
 
+
                     //TODO implementar a busca de acordo com o tipo de busca escolhido pelo usuário
                 }
         );

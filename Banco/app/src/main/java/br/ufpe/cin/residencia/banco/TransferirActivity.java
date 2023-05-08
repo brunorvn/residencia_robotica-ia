@@ -1,9 +1,13 @@
 package br.ufpe.cin.residencia.banco;
 
+import static android.content.ContentValues.TAG;
+
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
@@ -32,18 +36,39 @@ public class TransferirActivity extends AppCompatActivity {
 
         btnOperacao.setOnClickListener(
                 v -> {
-                    String numOrigem = numeroContaOrigem.getText().toString();
-                    String numDestino = numeroContaDestino.getText().toString();
-                    //TODO lembrar de implementar validação dos números das contas e do valor da operação, antes de efetuar a operação de transferência.
-                    // O método abaixo está sendo chamado, mas precisa ser implementado na classe BancoViewModel para funcionar.
-                    double valor = Double.valueOf(valorOperacao.getText().toString());
-                    if (numOrigem.trim().isEmpty()){
-                        numeroContaOrigem.setError("Campo não pode estar vazio.");
-                        numeroContaOrigem.requestFocus()
-;                    }
-                    viewModel.transferir(numOrigem, numDestino, valor);
-                    finish();
-                }
+
+                    try {
+                        String numOrigem = numeroContaOrigem.getText().toString();
+                        String numDestino = numeroContaDestino.getText().toString();
+                        double valor = Double.valueOf(valorOperacao.getText().toString());
+
+                        if (numOrigem.isEmpty()) {
+                            numeroContaOrigem.setError("Campo não pode estar vazio");
+                            numeroContaOrigem.requestFocus();
+                        }else if (numDestino.isEmpty()) {
+                            numeroContaDestino.setError("Campo não pode estar vazio");
+                            numeroContaDestino.requestFocus();
+                        }else if (numOrigem.equals(numDestino)) {
+                            numeroContaDestino.setError("Campos não podem ser iguais");
+                            numeroContaDestino.requestFocus();
+                        }else if (valor <= 0) {
+                            valorOperacao.setError("O valor da operação deve ser maior que zero");
+                            valorOperacao.requestFocus();
+                        }
+                            viewModel.transferir(numOrigem, numDestino, valor);
+                            finish();
+                    } catch (Exception exception) {
+                            numeroContaOrigem.setError(exception.getMessage());
+                            numeroContaOrigem.requestFocus();
+
+                            numeroContaDestino.setError(exception.getMessage());
+                            numeroContaDestino.requestFocus();
+
+                            valorOperacao.setError(exception.getMessage());
+                            valorOperacao.requestFocus();
+
+                        }
+                    }
         );
 
     }

@@ -14,11 +14,9 @@ public class ContaRepository {
         this.dao = dao;
         this.contas = dao.contas();
     }
-
     public LiveData<List<Conta>> getContas() {
         return contas;
     }
-
     @WorkerThread
     public void inserir(Conta c) {
         dao.insertConta(c);

@@ -17,18 +17,14 @@ public interface ContaDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertConta(Conta c);
 
-    //feito - incluir métodos para atualizar conta e remover conta
+    //incluir métodos para atualizar conta e remover conta
     @Update
     void updateConta(Conta c);
-
     @Delete
     void deleteConta(Conta c);
-
     @Query("SELECT * FROM contas ORDER BY numero ASC")
     LiveData<List<Conta>> contas();
-
     // 05. incluir métodos para buscar pelo
-
     @Query("select * from contas where numero like :numero limit 1")
     Conta findByNumber(String numero); // buscar (1) pelo número da conta
     @Query("select * from contas where nomeCliente like :nomeCliente limit 1")
@@ -41,7 +37,6 @@ public interface ContaDAO {
     List<Conta> findListByName(String nomeCliente);    // (2) pelo nome do cliente em lista
     @Query("select * from contas where cpfCliente like :cpfCliente")
     List<Conta> findListByCPFCliente(String cpfCliente);    // (3) pelo CPF do cliente em lista
-
 
     // 15. Saldo Total
     @Query("SELECT SUM(saldo) FROM contas")

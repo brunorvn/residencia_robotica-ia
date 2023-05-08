@@ -24,58 +24,67 @@ public class BancoViewModel extends AndroidViewModel {
     }
 
     void transferir(String numeroContaOrigem, String numeroContaDestino, double valor) {
+        //TODO implementar transferência entre contas (lembrar de salvar no BD os objetos Conta modificados)
         rodarEmBackground(
                 () -> {
                     Conta contaOrigem = BancoDB.getDB(getApplication()).contaDAO().findByNumber(numeroContaOrigem);
                     Conta contaDestino = BancoDB.getDB(getApplication()).contaDAO().findByNumber(numeroContaDestino);
-                    if (contaOrigem.saldo < valor) {
-                        throw new IllegalArgumentException("Saldo insuficiente para realizar essa transação.");
-                    }
+//                    if (contaOrigem.saldo < valor) {
+//                        throw new IllegalArgumentException("Saldo insuficiente para realizar essa transação.");
+//                    }
                     contaOrigem.transferir(contaDestino,valor);
 
-                    rodarEmBackground(()-> repository.atualizar(contaOrigem)); // atualizar as duas contas.
+                    rodarEmBackground(()-> repository.atualizar(contaOrigem)); // atualizar as duas contas no BD
                     rodarEmBackground(()-> repository.atualizar(contaDestino));
                 }
         );
-        //TODO implementar transferência entre contas (lembrar de salvar no BD os objetos Conta modificados)
-    }
 
+    }
     void creditar(String numeroConta, double valor) {
-        //TODO implementar creditar em conta (lembrar de salvar no BD o objeto Conta modificado)
+        rodarEmBackground(
+                () -> {
+                    Conta conta = BancoDB.getDB(getApplication()).contaDAO().findByNumber(numeroConta);
+                    conta.creditar(valor);
+                    // executa a operação e depois atualiza o objeto Conta modificado
+                    rodarEmBackground(() -> repository.atualizar(conta));
+                });
     }
 
     void debitar(String numeroConta, double valor) {
         //TODO implementar debitar em conta (lembrar de salvar no BD o objeto Conta modificado)
-    }
+        rodarEmBackground(
+                () -> {
+                    Conta conta = BancoDB.getDB(getApplication()).contaDAO().findByNumber(numeroConta);
+                    conta.debitar(valor);
+                    // executa a operação e depois atualiza o objeto Conta modificado
+                    rodarEmBackground(() -> repository.atualizar(conta));
 
+                });
+    }
     void buscarPeloNome(String nomeCliente) {
         rodarEmBackground(
                 () -> this.repository.buscarPeloNome(nomeCliente));
     }
-
     void buscarPeloCPF(String cpfCliente) {
         //TODO implementar busca pelo CPF do Cliente
+        rodarEmBackground(
+                () -> this.repository.buscarPeloCPF(cpfCliente));
     }
-
     void buscarPeloNumero(String numeroConta) {
         //TODO implementar busca pelo número da Conta
+        rodarEmBackground(
+                () -> this.repository.buscarPeloNumero(numeroConta));
     }
-
     void bancoSaldoTotal(){
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                saldoTotal = BancoDB.getDB(getApplication()).contaDAO().saldoTotal();
-            }
-        });
-        thread.start();
+        rodarEmBackground(
+                ()-> saldoTotal = BancoDB.getDB(getApplication()).contaDAO().saldoTotal());
     }
 
     public double getSaldoTotal() {
         bancoSaldoTotal();
         return saldoTotal;
     }
-
+    //código da aula - chamando o metodo rodarEmBackgroud para não precisar ficar repetindo códigos
     private void rodarEmBackground(Runnable r) {
         new Thread(r).start();
     }
