@@ -4,14 +4,18 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
+import androidx.recyclerview.widget.SortedList;
+
+import java.util.List;
 
 import br.ufpe.cin.residencia.banco.R;
 //ESTA CLASSE NAO PRECISA SER MODIFICADA!
 public class ContaAdapter extends ListAdapter<Conta, ContaViewHolder> {
     LayoutInflater inflater;
-
+   // SortedList<Conta> contas
     public ContaAdapter(LayoutInflater layoutInflater) {
         super(DIFF_CALLBACK);
         this.inflater = layoutInflater;
@@ -43,4 +47,5 @@ public class ContaAdapter extends ListAdapter<Conta, ContaViewHolder> {
                             oldItem.saldo == newItem.saldo;
                 }
             };
+
 }

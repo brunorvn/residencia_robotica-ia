@@ -14,41 +14,31 @@ public class ContaRepository {
         this.dao = dao;
         this.contas = dao.contas();
     }
-
     public LiveData<List<Conta>> getContas() {
         return contas;
     }
-
     @WorkerThread
     public void inserir(Conta c) {
-        dao.adicionar(c);
+        dao.insertConta(c);
     }
-
     @WorkerThread
     public void atualizar(Conta c) {
-        //TODO implementar atualizar
+        dao.updateConta(c);  // implementar atualizar
     }
-
     @WorkerThread
     public void remover(Conta c) {
-        //TODO implementar remover
+        dao.deleteConta(c);  // implementar remover
     }
-
     @WorkerThread
     public List<Conta> buscarPeloNome(String nomeCliente) {
-        //TODO implementar busca
-        return null;
+        return dao.findListByName(nomeCliente);
     }
-
     @WorkerThread
     public List<Conta> buscarPeloCPF(String cpfCliente) {
-        //TODO implementar busca
-        return null;
+        return dao.findListByCPFCliente(cpfCliente);
     }
-
     @WorkerThread
     public Conta buscarPeloNumero(String numeroConta) {
-        //TODO implementar busca
-        return null;
+        return dao.findByNumber(numeroConta);
     }
 }
