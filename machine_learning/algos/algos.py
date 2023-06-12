@@ -106,13 +106,13 @@ class KNN:
         Returns:
             label: The predicted class label for the test instance.
         """
-        # compute th distance
+        # compute the eucl distance
         distances = [euclidean_distance(x, x_train)
                      for x_train in self.X_train]
         # get the closest k
         k_indices = np.argsort(distances)[:self.k]
         k_nearest_labels = [self.y_train[i] for i in k_indices]
-        # majority voye
+        # majority vote
         most_common = Counter(k_nearest_labels).most_common()
         return most_common[0][0]
 
