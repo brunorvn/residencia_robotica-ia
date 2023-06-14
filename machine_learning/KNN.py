@@ -96,18 +96,18 @@ class KNN:
         predictions = [self._predict(x) for x in X]
         return predictions
 
-    def _predict(self, x):
+    def _predict(self, X):
         """
         Predict the class label for a single test instance.
 
         Parameters:
-            x (array-like): A single test instance.
+            X (array-like): A single test instance.
 
         Returns:
             label: The predicted class label for the test instance.
         """
         # compute th distance
-        distances = [euclidean_distance(x, x_train)
+        distances = [euclidean_distance(X, x_train)
                      for x_train in self.X_train]
         # get the closest k
         k_indices = np.argsort(distances)[:self.k]
