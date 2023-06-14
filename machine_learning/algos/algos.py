@@ -96,22 +96,43 @@ class KNN:
         predictions = [self._predict(x) for x in X]
         return predictions
 
-    def _predict(self, X):
+    def _predict(self, x):
         """
         Predict the class label for a single test instance.
 
         Parameters:
-            X (array-like): A single test instance.
+            x (array-like): A single test instance.
 
         Returns:
             label: The predicted class label for the test instance.
         """
-        # compute th distance
-        distances = [euclidean_distance(X, x_train)
+        # compute the eucl distance
+        distances = [euclidean_distance(x, x_train)
                      for x_train in self.X_train]
         # get the closest k
         k_indices = np.argsort(distances)[:self.k]
         k_nearest_labels = [self.y_train[i] for i in k_indices]
-        # majority voye
+        # majority vote
         most_common = Counter(k_nearest_labels).most_common()
         return most_common[0][0]
+
+
+class LinearRegression:
+
+    def __init__(self, learning_rate: float = 0.01, n_iters: int = 1000):
+        self.learning_rate = learning_rate
+        self.n_iters = n_iters
+        self.weights = None
+        self.bias = None
+    
+    def fit(self, X, y):
+        n_samples, n_features = X.shape
+        self.weights = np.zeros(n_features)
+        self.bias = 0
+
+        y_pred = np.dot(X, self.weights) + self.bias
+
+        dw = (1/n_samples) * np.dot(X, (y_pred - y))
+
+    def predict(self):
+        pass
