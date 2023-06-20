@@ -66,8 +66,8 @@ class KNN:
     """
     def __init__(self, k=3) -> None:
         self.k = k
-        self.X_train : int
-        self.y_train : int
+        self.X_train
+        self.y_train
 
     def fit(self, X, y):
         """
